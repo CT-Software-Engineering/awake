@@ -5,7 +5,7 @@ terraform {
 
   # cloud {
   #   workspaces {
-  #     name = "awake-eks"
+  #     name = "awake"
   #   }
   # }
   backend "s3" {

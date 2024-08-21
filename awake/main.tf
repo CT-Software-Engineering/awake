@@ -16,8 +16,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  #cluster_name = "awake-eks-${random_string.suffix.result}"
-  cluster_name = "awake-eks"
+  #cluster_name = "awake-${random_string.suffix.result}"
+  cluster_name = "awake"
 }
 
 # resource "random_string" "suffix" {
@@ -55,7 +55,7 @@ module "eks" {
   version = "20.8.5"
 
   #cluster_name    = local.cluster_name
-  cluster_name    = "awake-eks"
+  cluster_name    = "awake"
   cluster_version = "1.30"
 
   cluster_endpoint_public_access           = true

@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/CT-Software-Engineering/awake-eks.git']])
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/CT-Software-Engineering/awake.git']])
                 }
             }
         }
@@ -18,7 +18,7 @@ pipeline {
         stage('Initializing Terraform') {
             steps {
                 script {
-                    dir('awake-eks') {
+                    dir('awake') {
                         sh 'terraform init'
                     }
                 }
@@ -28,7 +28,7 @@ pipeline {
         stage('Formatting Terraform Code') {
             steps {
                 script {
-                    dir('awake-eks') {
+                    dir('awake') {
                         sh 'terraform fmt -recursive'
                     }
                 }
@@ -38,7 +38,7 @@ pipeline {
         stage('Validating Terraform') {
             steps {
                 script {
-                    dir('awake-eks') {
+                    dir('awake') {
                         sh 'terraform validate'
                     }
                 }
@@ -48,7 +48,7 @@ pipeline {
         stage('Previewing the Infrastructure') {
             steps {
                 script {
-                    dir('awake-eks') {
+                    dir('awake') {
                         sh 'terraform plan'
                         // input(message: "Are you sure to proceed?", ok: "proceed")
                     }
@@ -59,7 +59,7 @@ pipeline {
         stage('Creating/Destroying an EKS Cluster') {
             steps {
                 script {
-                    dir('awake-eks') {
+                    dir('awake') {
                         // sh 'terraform $action --auto-approve'
                         sh 'terraform apply --auto-approve'
                         // sh 'terraform destroy --auto-approve'
@@ -80,7 +80,7 @@ pipeline {
         stage('Update Kubeconfig') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name awake-eks --kubeconfig "/var/lib/jenkins/workspace/awake-eks CICD/.kube/config"'
+                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/awake CICD/.kube/config"'
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
         stage('Deploying Jenkins') {
             steps {
                 script {
-                    sh 'helm install jenkins bitnami/jenkins --namespace awake-eks-namespace --create-namespace --kubeconfig "/var/lib/jenkins/workspace/EKS CICD/.kube/config"'
+                    sh 'helm install jenkins bitnami/jenkins --namespace awake-namespace --create-namespace --kubeconfig "/var/lib/jenkins/workspace/awake pipeline/.kube/config"'
                 }
             }
         }
@@ -96,8 +96,8 @@ pipeline {
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
-                    sh 'kubectl get pods -n awake-eks-namespace --kubeconfig "$KUBECONFIG"'
-                    sh 'kubectl get svc -n awake-eks-namespace --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get pods -n awake-namespace --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get svc -n awake-namespace --kubeconfig "$KUBECONFIG"'
                 }
             }
         }
@@ -105,7 +105,7 @@ pipeline {
         stage('Deploying NGINX') {
             steps {
                 script {
-                    dir('awake-eks/configuration-files') {
+                    dir('awake/configuration-files') {
                         withCredentials([string(credentialsId: 'AWS_EKS_CLUSTER_NAME', variable: 'CLUSTER_NAME')]) {
                             // Add debug output to check cluster name
                             echo "Cluster Name: \$CLUSTER_NAME"
