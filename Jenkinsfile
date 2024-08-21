@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/CT-Software-Engineering/CICD-TERRAFORM-EKS.git']])
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/CT-Software-Engineering/awake-eks.git']])
                     
                 }
             }
@@ -65,8 +65,8 @@ pipeline {
                 script {
                     dir('EKS') {
                         // sh 'terraform $action --auto-approve'
-                        //sh 'terraform apply --auto-approve'
-                        sh 'terraform destroy --auto-approve'
+                        sh 'terraform apply --auto-approve'
+                        //sh 'terraform destroy --auto-approve'
                     }
                 }
             }
@@ -83,7 +83,7 @@ pipeline {
         }
         
         
-        /*
+        
         stage('Update Kubeconfig') {
             steps {
                 script {
@@ -91,8 +91,8 @@ pipeline {
                 }
             }
         }
-        */
-        /*
+        
+        
         
         stage('Deploying Jenkins') {
             steps {
@@ -101,8 +101,8 @@ pipeline {
                 }
             }
         }
-        */
-        /*
+        
+        
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
@@ -111,9 +111,9 @@ pipeline {
                 }
             }
         }
-        */
+        
 
-        /*
+        
                 stage('Deploying NGINX') {
             steps {
                 script {
@@ -130,7 +130,7 @@ pipeline {
                     }
                 }
             }
-            */
+            
         }
     }
 
