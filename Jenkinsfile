@@ -7,18 +7,14 @@ pipeline {
     }
 
     stages {
-        
-        
-        
         stage('Checkout SCM') {
             steps {
                 script {
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/CT-Software-Engineering/awake-eks.git']])
-                    
                 }
             }
         }
-        
+
         stage('Initializing Terraform') {
             steps {
                 script {
@@ -28,7 +24,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Formatting Terraform Code') {
             steps {
                 script {
@@ -38,7 +34,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Validating Terraform') {
             steps {
                 script {
@@ -48,7 +44,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Previewing the Infrastructure') {
             steps {
                 script {
@@ -59,20 +55,19 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Creating/Destroying an EKS Cluster') {
             steps {
                 script {
                     dir('EKS') {
                         // sh 'terraform $action --auto-approve'
                         sh 'terraform apply --auto-approve'
-                        //sh 'terraform destroy --auto-approve'
+                        // sh 'terraform destroy --auto-approve'
                     }
                 }
             }
         }
-        
-        
+
         stage('Initializing Helm') {
             steps {
                 script {
@@ -81,9 +76,7 @@ pipeline {
                 }
             }
         }
-        
-        
-        
+
         stage('Update Kubeconfig') {
             steps {
                 script {
@@ -91,9 +84,7 @@ pipeline {
                 }
             }
         }
-        
-        
-        
+
         stage('Deploying Jenkins') {
             steps {
                 script {
@@ -101,8 +92,7 @@ pipeline {
                 }
             }
         }
-        
-        
+
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
@@ -111,10 +101,8 @@ pipeline {
                 }
             }
         }
-        
 
-        
-                stage('Deploying NGINX') {
+        stage('Deploying NGINX') {
             steps {
                 script {
                     dir('EKS/configuration-files') {
@@ -130,4 +118,7 @@ pipeline {
                     }
                 }
             }
-            
+        }
+    } // End of stages
+
+} // End of pipeline
