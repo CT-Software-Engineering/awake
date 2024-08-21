@@ -18,7 +18,7 @@ pipeline {
         stage('Initializing Terraform') {
             steps {
                 script {
-                    dir('EKS') {
+                    dir('AWAKE-EKS') {
                         sh 'terraform init'
                     }
                 }
@@ -28,7 +28,7 @@ pipeline {
         stage('Formatting Terraform Code') {
             steps {
                 script {
-                    dir('EKS') {
+                    dir('AWAKE-EKS') {
                         sh 'terraform fmt -recursive'
                     }
                 }
@@ -38,7 +38,7 @@ pipeline {
         stage('Validating Terraform') {
             steps {
                 script {
-                    dir('EKS') {
+                    dir('AWAKE-EKS') {
                         sh 'terraform validate'
                     }
                 }
@@ -48,7 +48,7 @@ pipeline {
         stage('Previewing the Infrastructure') {
             steps {
                 script {
-                    dir('EKS') {
+                    dir('AWAKE-EKS') {
                         sh 'terraform plan'
                         // input(message: "Are you sure to proceed?", ok: "proceed")
                     }
@@ -59,7 +59,7 @@ pipeline {
         stage('Creating/Destroying an EKS Cluster') {
             steps {
                 script {
-                    dir('EKS') {
+                    dir('AWAKE-EKS') {
                         // sh 'terraform $action --auto-approve'
                         sh 'terraform apply --auto-approve'
                         // sh 'terraform destroy --auto-approve'
@@ -80,7 +80,7 @@ pipeline {
         stage('Update Kubeconfig') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/EKS CICD/.kube/config"'
+                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/AWAKE-EKS CICD/.kube/config"'
                 }
             }
         }
@@ -105,7 +105,7 @@ pipeline {
         stage('Deploying NGINX') {
             steps {
                 script {
-                    dir('EKS/configuration-files') {
+                    dir('AWAKE-EKS/configuration-files') {
                         withCredentials([string(credentialsId: 'AWS_EKS_CLUSTER_NAME', variable: 'CLUSTER_NAME')]) {
                             // Add debug output to check cluster name
                             echo "Cluster Name: \$CLUSTER_NAME"
