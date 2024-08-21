@@ -80,7 +80,7 @@ pipeline {
         stage('Update Kubeconfig') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/AWAKE-EKS CICD/.kube/config"'
+                    sh 'aws eks update-kubeconfig --name AWAKE-EKS --kubeconfig "/var/lib/jenkins/workspace/AWAKE-EKS CICD/.kube/config"'
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
         stage('Deploying Jenkins') {
             steps {
                 script {
-                    sh 'helm install jenkins bitnami/jenkins --namespace awake-namespace --create-namespace --kubeconfig "/var/lib/jenkins/workspace/EKS CICD/.kube/config"'
+                    sh 'helm install jenkins bitnami/jenkins --namespace AWAKE-EKS-namespace --create-namespace --kubeconfig "/var/lib/jenkins/workspace/EKS CICD/.kube/config"'
                 }
             }
         }
@@ -96,8 +96,8 @@ pipeline {
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
-                    sh 'kubectl get pods -n awake-namespace --kubeconfig "$KUBECONFIG"'
-                    sh 'kubectl get svc -n awake-namespace --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get pods -n AWAKE-EKS-namespace --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get svc -n AWAKE-EKS-namespace --kubeconfig "$KUBECONFIG"'
                 }
             }
         }
