@@ -80,7 +80,7 @@ pipeline {
         stage('Update Kubeconfig') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/awake CICD/.kube/config"'
+                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/awake/.kube/config"'
                 }
             }
         }
