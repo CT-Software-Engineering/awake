@@ -88,7 +88,10 @@ pipeline {
         stage('Deploying Jenkins') {
             steps {
                 script {
-                    sh 'helm install jenkins bitnami/jenkins --namespace mandarin --create-namespace --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
+                    sh 'helm upgrade jenkins bitnami/jenkins --namespace mandarin --create-namespace --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
+                    //sh 'helm install jenkins bitnami/jenkins --namespace mandarin --create-namespace --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
+                    //sh 'helm uninstall jenkins bitnami/jenkins --namespace mandarin --create-namespace --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
+                    
                 }
             }
         }
