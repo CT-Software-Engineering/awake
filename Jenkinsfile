@@ -88,7 +88,7 @@ pipeline {
         stage('Deploying Jenkins') {
             steps {
                 script {
-                    sh 'helm install jenkins bitnami/jenkins --namespace awake-namespace --create-namespace --kubeconfig "/var/lib/jenkins/workspace/awake/.kube/config"'
+                    sh 'helm install jenkins bitnami/jenkins --namespace awake --create-namespace --kubeconfig "/var/lib/jenkins/workspace/awake/.kube/config"'
                 }
             }
         }
@@ -96,8 +96,8 @@ pipeline {
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
-                    sh 'kubectl get pods -n awake-namespace --kubeconfig "$KUBECONFIG"'
-                    sh 'kubectl get svc -n awake-namespace --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get pods -n awake --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get svc -n awake --kubeconfig "$KUBECONFIG"'
                 }
             }
         }
