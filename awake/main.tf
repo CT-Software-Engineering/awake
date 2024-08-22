@@ -94,9 +94,12 @@ module "eks" {
       min_size     = 1
       max_size     = 3
       desired_size = 1
+      
     }
+    
   }
 }
+
 
 
 # https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
