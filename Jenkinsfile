@@ -61,8 +61,8 @@ pipeline {
                 script {
                     dir('awake') {
                         // sh 'terraform $action --auto-approve'
-                        //sh 'terraform apply --auto-approve'
-                        sh 'terraform destroy --auto-approve'
+                        sh 'terraform apply --auto-approve'
+                        //sh 'terraform destroy --auto-approve'
                     }
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
         stage('Update Kubeconfig') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name awake --kubeconfig "/var/lib/jenkins/workspace/awake/.kube/config"'
+                    sh 'aws eks update-kubeconfig --name mandarin --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
         stage('Deploying Jenkins') {
             steps {
                 script {
-                    sh 'helm install jenkins bitnami/jenkins --namespace awake --create-namespace --kubeconfig "/var/lib/jenkins/workspace/awake/.kube/config"'
+                    sh 'helm install jenkins bitnami/jenkins --namespace mandarin --create-namespace --kubeconfig "/var/lib/jenkins/workspace/mandarin/.kube/config"'
                 }
             }
         }
@@ -96,8 +96,8 @@ pipeline {
         stage('Verify Jenkins Deployment') {
             steps {
                 script {
-                    sh 'kubectl get pods -n awake --kubeconfig "$KUBECONFIG"'
-                    sh 'kubectl get svc -n awake --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get pods -n mandarin --kubeconfig "$KUBECONFIG"'
+                    sh 'kubectl get svc -n mandarin --kubeconfig "$KUBECONFIG"'
                 }
             }
         }
