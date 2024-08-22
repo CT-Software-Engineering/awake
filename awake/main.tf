@@ -16,8 +16,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  #cluster_name = "awake-${random_string.suffix.result}"
-  cluster_name = "awake"
+  #cluster_name = "mandarin-${random_string.suffix.result}"
+  cluster_name = "mandarin"
 }
 
 # resource "random_string" "suffix" {
@@ -29,7 +29,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
 
-  name = "awake-vpc"
+  name = "mandarin-vpc"
 
   cidr = "10.0.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -55,7 +55,7 @@ module "eks" {
   version = "20.8.5"
 
   #cluster_name    = local.cluster_name
-  cluster_name    = "awake"
+  cluster_name    = "mandarin"
   cluster_version = "1.30"
 
   cluster_endpoint_public_access           = true
